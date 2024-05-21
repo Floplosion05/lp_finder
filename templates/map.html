@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+
+<title>Lp.py</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/map.css') }}">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
+<link rel="stylesheet" href="https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/leaflet.fullscreen.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster@1.4.1/dist/MarkerCluster.Default.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/leaflet.awesome-markers.css') }}">
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="https://api.mapbox.com/mapbox.js/plugins/leaflet-fullscreen/v1.0.1/Leaflet.fullscreen.min.js"></script>
+<script src="https://unpkg.com/leaflet.markercluster@1.4.1/dist/leaflet.markercluster.js"></script>
+<script src="{{ url_for('static', filename='js/leaflet.awesome-markers.min.js') }}"></script>
+
+</head>
+<body>
+<div id="map"></div>
+<script src="{{ url_for('static', filename='js/map.js') }}"></script>
+<script>
+var cluster = L.markerClusterGroup({spiderfyOnMaxZoom: false, zoomToBoundsOnClick: true});
+{% for marker in markers %}
+var category = {{ markers[marker]['category'] }} || 0;
+var name = "{{ markers[marker]['name'] }}";
+var id = {{ markers[marker]['id'] }};
+var pic_count = {{ markers[marker]['pic_count'] }};
+var comment_count = {{ markers[marker]['comment_count'] }};
+var popup = `<div class="popup-container"><a id="${id}", data-value="${name}", href="${id}" target="_blank">${name}</a><div class="popup-container-child"><p>Category: ${categories[category-1]}</p><p>Pics: ${pic_count}</p><p>Comments: ${comment_count}</p></div></div>`;
+cluster.addLayer(L.marker([{{ markers[marker]["lat"] }}, {{ markers[marker]["long"] }}], {icon: awesomemarkers[category]})
+.bindPopup(popup)
+.openPopup());
+{% endfor %}
+map.addLayer(cluster);
+</script>
+</body>
+</html>
+
+<!--
+	<img src="${title_pic_url}" height="150px" width="150px" onclick="window.open('/${id}', '_blank')">
+-->

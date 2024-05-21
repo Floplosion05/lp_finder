@@ -1,0 +1,56 @@
+body {
+	padding: 0;
+	margin: 0;
+}
+
+html, body, #map {
+	height: 100%;
+	width: 100vw;
+}
+/*
+.leaflet-layer,
+*/
+.leaflet-control-zoom-in,
+.leaflet-control-zoom-out,
+.leaflet-control-attribution,
+.leaflet-control-fullscreen,
+.leaflet-popup,
+.leaflet-control-layers,
+.leaflet-control-scale {
+  filter: invert(100%) hue-rotate(180deg) brightness(95%) contrast(90%);
+}
+
+.leaflet-popup-content-wrapper, .leaflet-popup-tip {
+	box-shadow: 0 3px 14px rgb(255 255 255 / 40%) !important;
+}
+
+.popup-container {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	color: black;
+}
+
+.popup-container * {
+	font-family: 'Courier New', monospace;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+.popup-container-child {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	font-size: 1.5em;
+}
+
+.popup-container > a {
+	font-size: 2em !important;
+	color: inherit !important;
+	text-decoration: none !important;
+}
+
+.popup-container-child > p {
+	margin: 0 !important;
+}

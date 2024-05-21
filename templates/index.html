@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+<head>
+<title>Flask Leaflet Website</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/universal.css') }}" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+</head>
+<body>
+<div id="map"></div>
+<script src="{{ url_for('static', filename='js/universal.js') }}" /></script>
+<script>
+{% for marker in markers %}
+L.marker([{{ marker['lat'] }}, {{ marker['lon'] }}]).addTo(map)
+.bindPopup("{{ marker['popup'] }}")
+.openPopup();
+{% endfor %}
+</script>
+</body>
+</html>
