@@ -8,9 +8,9 @@ function mobileAndTabletCheck() {
     return check;
 };
 
-var map = L.map('map', { zoomControl: false,
-                        scrollWheelZoom: false,
-                        sleep: true
+var map = L.map('map', {
+        	            zoomControl: false,
+                        scrollWheelZoom: false
 });
 
 var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -42,7 +42,6 @@ var baseMaps = {
 };
 
 Esri_WorldImagery.addTo(map);
-
 map.dragging.disable();
 map.touchZoom.disable();
 map.doubleClickZoom.disable();
@@ -69,19 +68,24 @@ var long = document.getElementById("long").textContent;
 
 var marker = L.marker([lat, long], markerOptions).addTo(map);
 document.getElementsByClassName('leaflet-control-attribution')[0].style.display = 'none';
-map.setView([lat, long], 12);
-map.flyTo([lat, long], 16, {
-    animate: true,
-    duration: 1.5
-});
-
+function mapZoom() { 
+    console.log("test1")
+    map.setView([lat, long], 12);
+    map.flyTo([lat, long], 16, {
+        animate: true,
+        duration: 1.5
+    });
+    console.log("test2")
+}
+mapZoom();
+/*
 if (!mobileAndTabletCheck()) {
     setInterval(function () {
         const map_elem = document.getElementById('map');
         map_elem.style.opacity = clamp(map_elem.style.opacity - 0.1,0.1,1);
     }, 200);
 }
-/*
+
 if (!mobileAndTabletCheck()) {
     const map_elem = document.getElementById('map');
     window.addEventListener("mousewheel", (event) => {
@@ -89,6 +93,7 @@ if (!mobileAndTabletCheck()) {
     }, true);
 }
 */
+
 //Text Glitch Effect
 
 const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -121,6 +126,31 @@ document.addEventListener('DOMContentLoaded', function() {
     }, 30);
 });
 
-var overlay = document.getElementById("overlay");
-console.log(overlay.parentElement.offsetHeight);
-overlay.style.height = overlay.parentNode.offsetHeight;
+let sections = gsap.utils.toArray("section"),
+currentSection = sections[0];
+gsap.defaults({overwrite: 'auto', duration: 0.3});
+gsap.set("body", {height: (sections.length * 100) + "%"});
+
+sections.forEach((section, i) => {
+    ScrollTrigger.create({
+        start: () => (i - 0.5) * innerHeight,
+        end: () => (i + 0.5) * innerHeight,
+        onToggle: self => self.isActive && setSection(section)
+    });
+});
+
+
+function setSection(newSection) {
+  if (newSection !== currentSection) {
+    gsap.to(currentSection, {scale: 0.9, autoAlpha: 1})
+    gsap.to(newSection, {scale: 1, autoAlpha: 1});
+    currentSection = newSection;
+    if (ScrollTrigger.getAll()[0].isActive) {
+        map.setView([lat, long], 12, {animate: false});
+        map.flyTo([lat, long], 16, {
+            animate: true,
+            duration: 1.5
+        });
+    }
+  }
+}
